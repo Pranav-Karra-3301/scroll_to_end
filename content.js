@@ -64,6 +64,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
   } else if (request.action === 'reindexAll') {
     reindexAllTweets();
     sendResponse({success: true});
+  } else if (request.action === 'indexNewTweets') {
+    indexNewTweets();
+    sendResponse({success: true});
   } else if (request.action === 'searchIndex') {
     const results = searchIndexedTweets(request.query);
     sendResponse({results: results});

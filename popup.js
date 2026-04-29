@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const jumpBottomBtn = document.getElementById('jumpBottomBtn');
   const forceLoadBtn = document.getElementById('forceLoadBtn');
   const reindexBtn = document.getElementById('reindexBtn');
+  const indexNowBtn = document.getElementById('indexNowBtn');
   const searchTextInput = document.getElementById('searchText');
   const usernameTextInput = document.getElementById('usernameText');
   const embedSearchToggle = document.getElementById('embedSearchToggle');
@@ -460,6 +461,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
   
+  indexNowBtn.addEventListener('click', function() {
+    chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
+      const tab = tabs[0];
+      
+      if (!tab.url.includes('x.com') || !tab.url.includes('/likes')) {
+        statusDiv.textContent = 'Please navigate to a X.com likes page first';
+        return;
+      }
+      
+      chrome.tabs.sendMessage(tab.id, {action: 'indexNewTweets'}, function(response) {
+        if (chrome.runtime.lastError) {
+          statusDiv.textContent = 'Error: Please refresh the page';
+          return;
+        }
+        statusDiv.textContent = 'Indexing new tweets...';
+        // Refresh the index stats in the search tab
+        setTimeout(() => {
+          loadIndexStats();
+        }, 1000);
+      });
+    });
+  });
+
   reindexBtn.addEventListener('click', function() {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
       const tab = tabs[0];
