@@ -3,6 +3,7 @@
   "name": "Robin - Twitter Likes Search",
   "version": "1.2.3",
   "description": "Smart Twitter likes search tool - find specific tweets by text or username with ultra-fast scrolling",
+  "author": "Pranav Karra",
   "permissions": [
     "activeTab",
     "storage"
